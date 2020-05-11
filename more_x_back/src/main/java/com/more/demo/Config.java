@@ -1,5 +1,6 @@
 package com.more.demo;
 
+//忽略
 public class Config {
     String APPID = "wx118edff426ef6ceb";
     String APP_SECRET = "e161200e8c12bd565d604291bc516e9e";
