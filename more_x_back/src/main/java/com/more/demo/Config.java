@@ -2,7 +2,7 @@ package com.more.demo;
 
 public class Config {
     String APPID = "wx118edff426ef6ceb";
-    String APP_SECRET = "9d029496fe8f83aaa49b33fdc7934c7a";
+    String APP_SECRET = "e161200e8c12bd565d604291bc516e9e";
 
     public String getAPPID() {
         return APPID;
