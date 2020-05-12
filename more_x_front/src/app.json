@@ -20,13 +20,13 @@
     "list": [{
       "text": "首页",
       "pagePath": "pages/index/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
+      "iconPath": "static/tabs/index.png",
+      "selectedIconPath": "static/tabs/index-active.png"
     }, {
       "text": "用户",
       "pagePath": "pages/user_center/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
+      "iconPath": "static/tabs/user.png",
+      "selectedIconPath": "static/tabs/user-active.png"
     }],
 
     "items": [{

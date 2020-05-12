@@ -3,7 +3,6 @@
     <div v-if="notLogin" class="login-area">
       <login @loginsuccess="loginSuccess"></login>
     </div>
-
   </div>
 </template>
 
@@ -18,6 +17,12 @@ export default {
   data () {
     return {
       notLogin:true
+    }
+  },
+
+  onLoad (option) {
+    if(option.logout === 'true'){
+      this.notLogin = true
     }
   },
 
