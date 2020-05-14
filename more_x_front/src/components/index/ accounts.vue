@@ -202,7 +202,6 @@
         const level = position/80 - index
         for(let i=index;i<index+2;i++){
           if(i === index){
-            console.log(i)
             this.processedItems[i].opacity = 1 - level
             this.processedItems[i].width = (1 - level)*5 + 95
           }

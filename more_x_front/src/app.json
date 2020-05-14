@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/user_center/main",
+    "pages/add/main",
     "pages/logs/main",
     "pages/counter/main"
   ],
@@ -22,6 +23,11 @@
       "pagePath": "pages/index/main",
       "iconPath": "static/tabs/index.png",
       "selectedIconPath": "static/tabs/index-active.png"
+    }, {
+      "text": "新建记录",
+      "pagePath": "pages/add/main",
+      "iconPath": "static/tabs/add.png",
+      "selectedIconPath": "static/tabs/add-active.png"
     }, {
       "text": "用户",
       "pagePath": "pages/user_center/main",
