@@ -1,9 +1,9 @@
 <template>
   <div class="edit-container">
     <div class="edit-items">
-      <div class="edit-item-val-type" @click="callCalculator">
-        <div class="edit-item-type">收入</div>
-        <div class="edit-item-value">{{value}}</div>
+      <div class="edit-item-val-type" @click="callCalculator" @touchstart="touchStart" @touchend="touchEnd">
+        <div :class="accountItem.type === 0 ? 'edit-item-type out':'edit-item-type in'">{{accountItem.type === 0 ? '支出':'收入'}}</div>
+        <div :class="accountItem.type === 0 ? 'edit-item-value out':'edit-item-value in'">{{accountItem.value}}</div>
       </div>
       <div>分类【主分类和子分类】</div>
       <div>描述</div>
@@ -27,7 +27,11 @@
     data () {
       return {
         showCalculator: false,
-        value : '0.00'
+        accountItem: {
+          type: 0,
+          value : '0.00'
+        },
+        touchStartX:null
       }
     },
     methods: {
@@ -37,6 +41,14 @@
       callCalculator() {
         this.showCalculator = !this.showCalculator
       },
+      touchStart (e) {
+        this.touchStartX = e.pageX
+      },
+      touchEnd(e){
+        if(Math.abs(e.mp.changedTouches[0].pageX - this.touchStartX) > 50){
+          this.accountItem.type = 1 - this.accountItem.type
+        }
+      }
 
     }
   }
@@ -66,16 +78,22 @@
   line-height: 50px;
   font-size: 30px;
   font-weight: lighter;
+  display: flex;
   .edit-item-type {
-    float: left;
     font-size: 12px;
     margin-left: 10px;
   }
   .edit-item-value {
-    width: 100%;
     text-align: center;
-    translate: -5%;
+    translate: -8%;
+    flex: 1;
   }
 
+}
+.in {
+  color: crimson;
+}
+.out {
+  color: green;
 }
 </style>
