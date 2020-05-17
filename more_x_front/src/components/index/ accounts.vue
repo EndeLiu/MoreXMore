@@ -229,16 +229,16 @@
 .item {
   width: 90%;
   margin: auto;
-
   .item-details{
+    box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
     border-radius: 4px;
     color: #322f3b;
     font-weight: lighter;
-    border: 2px solid #322f3b;
     margin: auto auto 5px;
     display: flex;
     flex-direction: row;
     height: 80px;
+    transition: width 0.2s;
     .item-details-left {
       width: 15%;
       display: flex;

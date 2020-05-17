@@ -1,32 +1,53 @@
 <template>
   <div class="edit-container">
     <div class="edit-items">
+
       <div class="edit-item-val-type" @click="callCalculator" @touchstart="touchStart" @touchend="touchEnd">
         <div :class="accountItem.type === 0 ? 'edit-item-type out':'edit-item-type in'">{{accountItem.type === 0 ? '支出':'收入'}}</div>
         <div :class="accountItem.type === 0 ? 'edit-item-value out':'edit-item-value in'">{{accountItem.value}}</div>
       </div>
-      <div>分类【主分类和子分类】</div>
+      <div class="line"></div>
+      <div class="edit-item-cat" @click="callCatSelector">
+        <div>{{currentCat}}</div>
+        <div>></div>
+        <div>{{currentSubCat}}</div>
+      </div>
+      <div class="line"></div>
+
+
       <div>描述</div>
       <div>日期【日历表组件】</div>
       <div>支付方式</div>
     </div>
 
-    <div  class="cal-root">
+    <div class="cal-root" >
       <calculator @res="getCalRes" v-if="showCalculator"></calculator>
+    </div>
+
+    <div v-show="showSelector">
+      <scroll-selector  @res="getSelectRes" ref="selector"></scroll-selector>
     </div>
 
   </div>
 </template>
 
 <script>
+  import {Category} from "../../customConfig/catConfig";
   import calculator from "../../components/add/calculator";
+  import scrollSelector from "../../components/add/scrollSelector";
+
   export default {
     components: {
-      calculator
+      calculator,
+      scrollSelector
     },
     data () {
       return {
+        currentCat: Category[0].name,
+        currentSubCat: Category[0].subCat[0].name,
+        selectType:'',
         showCalculator: false,
+        showSelector: false,
         accountItem: {
           type: 0,
           value : '0.00'
@@ -36,10 +57,14 @@
     },
     methods: {
       getCalRes (res){
-        this.value = res
+        this.accountItem.value = res
       },
+
       callCalculator() {
         this.showCalculator = !this.showCalculator
+        if (this.showCalculator) {
+          this.showSelector = false
+        }
       },
       touchStart (e) {
         this.touchStartX = e.pageX
@@ -48,14 +73,41 @@
         if(Math.abs(e.mp.changedTouches[0].pageX - this.touchStartX) > 50){
           this.accountItem.type = 1 - this.accountItem.type
         }
+      },
+      callCatSelector() {
+        if (this.showSelector) { // 关闭唤醒
+          this.showSelector = false
+        } else { // 唤醒
+          this.showSelector = true
+          this.showCalculator = false
+          this.selectType = 'cat'
+          this.$refs.selector.colCount = 2
+          this.$refs.selector.cols= [Category,Category[0].subCat]
+        }
+
+
+      },
+      getSelectRes (res) {
+        if (this.selectType === 'cat') {
+          this.currentCat = Category[res[0]].name
+          this.currentSubCat = Category[res[0]].subCat[res[1]].name
+          this.$refs.selector.cols.splice(1, 1, Category[res[0]].subCat) // vm.items.splice(indexOfItem, 1, newValue)
+          //this.$refs.selector.cols[1]= Category[res[0]].subCat
+        }
       }
+
 
     }
   }
 </script>
 
 <style lang="scss">
+.line {
+  margin: 20px;
+  border-bottom: 1px solid #cccccc;
+  box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
 
+}
 .edit-container{
   padding: 10px;
   display: flex;
@@ -63,6 +115,10 @@
   flex-direction: column;
   .edit-items {
     flex: 1 0 auto;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 5px;
+
   }
   .cal-root {
     flex:0 0 auto;
@@ -73,7 +129,6 @@
   margin-top: 10px;
   border: 1px solid white;
   border-radius: 4px;
-  box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);
   height: 50px;
   line-height: 50px;
   font-size: 30px;
@@ -96,4 +151,40 @@
 .out {
   color: green;
 }
+.edit-item-cat {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  :first-child {
+    font-weight: bolder;
+    color: #322f3b;
+    border: 1px solid white;
+    border-radius: 4px;
+  }
+  :last-child {
+    font-weight: bolder;
+    color: #322f3b;
+    border: 1px solid white;
+    border-radius: 4px;
+  }
+  div {
+    font-weight: bolder;
+    padding: 5px;
+    border-radius: 4px;
+    width: 30%;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+  }
+}
+.picker-view {
+  width: 100%;
+  height: 300px;
+}
+.picker-view-col {
+  line-height: 50px;
+  text-align: center;
+}
+
 </style>
