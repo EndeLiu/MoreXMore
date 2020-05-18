@@ -12,9 +12,9 @@
           <div class="item-details-middle">
             <div class="details-top">
               <div class="item-details-subcategory">
-          <span>
-            {{item.subCatfory}}
-          </span>
+                <span>
+                  {{item.subCategory}}
+                </span>
               </div>
               <div class="item-details-pay">
               <span :class="'pay-by-'+item.payEn">
@@ -55,7 +55,7 @@
             id: 1,
             type: 0,
             category: '食物',
-            subCatfory: '零食',
+            subCategory: '零食',
             desc: '今天肚子饿了所以吃了点',
             value: 50,
             date: '2020/5/13',
@@ -66,7 +66,7 @@
             id: 2,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -77,7 +77,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -88,7 +88,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -99,7 +99,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -110,7 +110,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -121,7 +121,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -132,7 +132,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',
@@ -143,7 +143,7 @@
             id: 3,
             type: 1,
             category: '工资',
-            subCatfory: '业务分红',
+            subCategory: '业务分红',
             desc: 'xxx',
             value: 500,
             date: '2020/5/13',

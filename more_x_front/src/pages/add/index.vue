@@ -8,17 +8,20 @@
       </div>
       <div class="line"></div>
       <div class="edit-item-cat" @click="callCatSelector">
-        <div>{{currentCat}}</div>
+        <div>{{accountItem.category}}</div>
         <div>></div>
-        <div>{{currentSubCat}}</div>
+        <div>{{accountItem.subCategory}}</div>
       </div>
       <div class="line"></div>
 
-
+      <div class="edit-item-cat" @click="callDateSelector">
+        <div>{{accountItem.date}}</div>
+      </div>
       <div>描述</div>
-      <div>日期【日历表组件】</div>
+
       <div>支付方式</div>
     </div>
+
 
     <div class="cal-root" >
       <calculator @res="getCalRes" v-if="showCalculator"></calculator>
@@ -43,29 +46,40 @@
     },
     data () {
       return {
-        currentCat: Category[0].name,
-        currentSubCat: Category[0].subCat[0].name,
         selectType:'',
         showCalculator: false,
         showSelector: false,
         accountItem: {
           type: 0,
-          value : '0.00'
+          value : '0.00',
+          category: Category[0].name,
+          subCategory: Category[0].subCat[0].name,
+          date:''
         },
         touchStartX:null
       }
     },
+
+    mounted () {
+     this.getToday()
+    },
+
     methods: {
+      getToday () {
+        const today = new Date()
+        this.accountItem.date = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
+      },
+
       getCalRes (res){
         this.accountItem.value = res
       },
-
       callCalculator() {
         this.showCalculator = !this.showCalculator
         if (this.showCalculator) {
           this.showSelector = false
         }
       },
+
       touchStart (e) {
         this.touchStartX = e.pageX
       },
@@ -74,25 +88,44 @@
           this.accountItem.type = 1 - this.accountItem.type
         }
       },
+
       callCatSelector() {
         if (this.showSelector) { // 关闭唤醒
           this.showSelector = false
+          this.$refs.selector.close()
         } else { // 唤醒
           this.showSelector = true
           this.showCalculator = false
           this.selectType = 'cat'
           this.$refs.selector.colCount = 2
           this.$refs.selector.cols= [Category,Category[0].subCat]
+          this.$refs.selector.open()
+          this.$refs.selector.type = 'custom'
         }
-
-
       },
-      getSelectRes (res) {
-        if (this.selectType === 'cat') {
-          this.currentCat = Category[res[0]].name
-          this.currentSubCat = Category[res[0]].subCat[res[1]].name
-          this.$refs.selector.cols.splice(1, 1, Category[res[0]].subCat) // vm.items.splice(indexOfItem, 1, newValue)
+      callDateSelector() {
+        if (this.showSelector) { // 关闭唤醒
+          this.showSelector = false
+          this.$refs.selector.close()
+        } else { // 唤醒
+          this.showSelector = true
+          this.showCalculator = false
+          this.selectType = 'date'
+          this.$refs.selector.dateMode(this.accountItem.date.split('/'))
+          this.$refs.selector.open()
+
+        }
+      },
+
+      getSelectRes (res, type) {
+        if (this.selectType === 'cat' && type === 'custom') {
+          this.accountItem.category = Category[res[0]].name
+          this.accountItem.subCategory = Category[res[0]].subCat[res[1]].name
+          this.$refs.selector.cols.splice(1, 1, Category[res[0]].subCat) // array.splice(indexOfItem, 1, newValue)
           //this.$refs.selector.cols[1]= Category[res[0]].subCat
+        }
+        else if (this.selectType === 'date' && type === 'date') {
+          this.accountItem.date = (2010 + res[0])+'/'+(1+res[1])+'/'+ (1+res[2])
         }
       }
 
@@ -106,7 +139,6 @@
   margin: 20px;
   border-bottom: 1px solid #cccccc;
   box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
-
 }
 .edit-container{
   padding: 10px;
@@ -115,10 +147,8 @@
   flex-direction: column;
   .edit-items {
     flex: 1 0 auto;
-    border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 5px;
-
   }
   .cal-root {
     flex:0 0 auto;
