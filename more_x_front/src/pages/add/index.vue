@@ -1,25 +1,35 @@
 <template>
   <div class="edit-container">
-    <div class="edit-items">
-
-      <div class="edit-item-val-type" @click="callCalculator" @touchstart="touchStart" @touchend="touchEnd">
+    <div class="edit-items" @click="deactivateTools">
+      <div class="edit-item-tip">——·   收支金额   ·——</div>
+      <div class="edit-item-val-type" @click.stop="callCalculator" @touchstart="touchStart" @touchend="touchEnd">
         <div :class="accountItem.type === 0 ? 'edit-item-type out':'edit-item-type in'">{{accountItem.type === 0 ? '支出':'收入'}}</div>
         <div :class="accountItem.type === 0 ? 'edit-item-value out':'edit-item-value in'">{{accountItem.value}}</div>
       </div>
-      <div class="line"></div>
-      <div class="edit-item-cat" @click="callCatSelector">
+
+      <div class="edit-item-tip">——·   分类   ·——</div>
+      <div class="edit-item-cat" @click.stop="callCatSelector">
         <div>{{accountItem.category}}</div>
         <div>></div>
         <div>{{accountItem.subCategory}}</div>
       </div>
-      <div class="line"></div>
 
-      <div class="edit-item-cat" @click="callDateSelector">
+      <div class="edit-item-tip">——·   日期   ·——</div>
+      <div class="edit-item-cat" @click.stop="callDateSelector">
         <div>{{accountItem.date}}</div>
       </div>
-      <div>描述</div>
 
-      <div>支付方式</div>
+      <div class="edit-item-tip">——·   描述   ·——</div>
+      <textarea placeholder="输入一些描述吧..." class="edit-item-desc"></textarea>
+
+      <div class="edit-item-tip">——·   支付方式   ·——</div>
+      <div class="edit-item-pay">
+        <ul>
+          <li v-for="(item, index) in payMethod" :key="index" @click="activatePay(index)"
+              :class="!item.isSelected?'deactivate-pay pay':'pay'" :style="'background-color:'+ item.color">{{item.payCn}}
+          </li>
+        </ul>
+      </div>
     </div>
 
 
@@ -27,7 +37,7 @@
       <calculator @res="getCalRes" v-if="showCalculator"></calculator>
     </div>
 
-    <div v-show="showSelector">
+    <div v-show="showSelector" class="cal-root">
       <scroll-selector  @res="getSelectRes" ref="selector"></scroll-selector>
     </div>
 
@@ -36,6 +46,7 @@
 
 <script>
   import {Category} from "../../customConfig/catConfig";
+  import  {payConfig} from "../../customConfig/payConfig";
   import calculator from "../../components/add/calculator";
   import scrollSelector from "../../components/add/scrollSelector";
 
@@ -46,6 +57,7 @@
     },
     data () {
       return {
+        payMethod: [],
         selectType:'',
         showCalculator: false,
         showSelector: false,
@@ -60,6 +72,17 @@
       }
     },
 
+    created () {
+      for (const item of payConfig) {
+        this.payMethod.push({
+          payEn: item.payEn,
+          payCn: item.payCn,
+          color: item.color,
+          isSelected: false
+        })
+      }
+    },
+
     mounted () {
      this.getToday()
     },
@@ -68,6 +91,16 @@
       getToday () {
         const today = new Date()
         this.accountItem.date = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
+      },
+
+      deactivateTools () {
+        if (this.showCalculator) {
+          this.showCalculator = false
+        }
+        if (this.showSelector) {
+          this.showSelector = false
+          this.$refs.selector.close()
+        }
       },
 
       getCalRes (res){
@@ -116,7 +149,6 @@
 
         }
       },
-
       getSelectRes (res, type) {
         if (this.selectType === 'cat' && type === 'custom') {
           this.accountItem.category = Category[res[0]].name
@@ -126,6 +158,16 @@
         }
         else if (this.selectType === 'date' && type === 'date') {
           this.accountItem.date = (2010 + res[0])+'/'+(1+res[1])+'/'+ (1+res[2])
+        }
+      },
+
+      activatePay (index) {
+        for (const i in this.payMethod) {
+          if (i === index.toString()) {
+            this.payMethod[i].isSelected = true
+          } else {
+            this.payMethod[i].isSelected = false
+          }
         }
       }
 
@@ -140,6 +182,33 @@
   border-bottom: 1px solid #cccccc;
   box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
 }
+.edit-item-tip {
+  text-align: center;
+  font-size: 15px;
+  color: #cccccc;
+}
+.edit-item-pay {
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .deactivate-pay {
+      background-color: rgba(0, 0, 0, 0.3)!important;
+    }
+    .pay {
+      box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+      width: 25%;
+      margin: 10px;
+      color: white;
+      text-align: center;
+      border-radius: 4px;
+      font-size: 12px;
+      padding: 2px;
+      font-weight: bolder;
+    }
+  }
+}
+
 .edit-container{
   padding: 10px;
   display: flex;
@@ -149,10 +218,21 @@
     flex: 1 0 auto;
     border-radius: 4px;
     padding: 5px;
+    .edit-item-desc {
+      width: auto!important;
+      margin-left: 20px;
+      margin-right: 20px;
+      padding: 20px;
+      height: 60px;
+    }
   }
   .cal-root {
-    flex:0 0 auto;
-    margin-bottom: 20px;
+    position: fixed;
+    bottom: 10px;
+    width: 90%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
   }
 }
 .edit-item-val-type {
@@ -162,15 +242,16 @@
   height: 50px;
   line-height: 50px;
   font-size: 30px;
-  font-weight: lighter;
+  font-weight: bolder;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
   display: flex;
   .edit-item-type {
     font-size: 12px;
-    margin-left: 10px;
+    margin-left: 50px;
   }
   .edit-item-value {
     text-align: center;
-    translate: -8%;
+    translate: -10%;
     flex: 1;
   }
 

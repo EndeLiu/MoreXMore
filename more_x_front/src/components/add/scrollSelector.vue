@@ -1,8 +1,8 @@
 <template>
   <div>
     <picker-view :value="value" indicator-style="height: 50px;" indicator-class="picker-view-indicator" class="picker-view"  @change="bindChange">
-      <picker-view-column v-for="(col,colIndex) in cols" :key="colIndex">
-        <view v-for="(item, index) in col" :key="index"  class="picker-view-col" >{{item.name}}</view>
+      <picker-view-column class="picker-view-col" v-for="(col,colIndex) in cols" :key="colIndex">
+        <view v-for="(item, index) in col" :key="index" >{{item.name}}</view>
       </picker-view-column>
     </picker-view>
   </div>
@@ -120,6 +120,10 @@
 
 <style lang="scss">
 .picker-view-indicator {
+  color: #322f3b;
   border-bottom: 1px solid rgba(0, 0, 0, 0.11);
+}
+.picker-view-col {
+  background-color: white;
 }
 </style>
