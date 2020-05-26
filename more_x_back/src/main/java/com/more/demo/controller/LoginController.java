@@ -16,11 +16,6 @@ import java.util.Map;
 @RestController
 public class LoginController {
 
-
-
-
-
-
     @GetMapping("/api/login")
     public CustomResult Login(String code) throws IOException {
         Config config = new Config();//app id&secret的配置
@@ -36,5 +31,4 @@ public class LoginController {
 
         return new CustomResult(httpResult);
     }
-
 }

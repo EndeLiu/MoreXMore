@@ -20,7 +20,7 @@
       </div>
 
       <div class="edit-item-tip">——·   描述   ·——</div>
-      <textarea placeholder="输入一些描述吧..." class="edit-item-desc"></textarea>
+      <textarea placeholder="输入一些描述吧..." class="edit-item-desc" v-model="accountItem.desc"></textarea>
 
       <div class="edit-item-tip">——·   支付方式   ·——</div>
       <div class="edit-item-pay">
@@ -31,6 +31,8 @@
         </ul>
       </div>
     </div>
+
+    <button @click="submit">123</button>
 
 
     <div class="cal-root" >
@@ -66,7 +68,9 @@
           value : '0.00',
           category: Category[0].name,
           subCategory: Category[0].subCat[0].name,
-          date:''
+          date:'',
+          desc:'',
+          pay:''
         },
         touchStartX:null
       }
@@ -88,6 +92,33 @@
     },
 
     methods: {
+      check () {
+        if (this.accountItem.value === '0.00') {
+          wx.showToast({
+            title: '请填入有效收支金额',
+            icon: 'none',
+            duration: 1000
+          })
+          return false
+        }
+        if (this.accountItem.pay === '') {
+          wx.showToast({
+            title: '请选择支付钱包',
+            icon: 'none',
+            duration: 1000
+          })
+          return false
+        }
+        return true
+      },
+
+      submit () {
+        if (this.check()) {
+          console.log('提交到后台')
+        }
+        console.log(this.accountItem)
+      },
+
       getToday () {
         const today = new Date()
         this.accountItem.date = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
@@ -164,6 +195,7 @@
       activatePay (index) {
         for (const i in this.payMethod) {
           if (i === index.toString()) {
+            this.accountItem.pay = this.payMethod[i].payEn
             this.payMethod[i].isSelected = true
           } else {
             this.payMethod[i].isSelected = false
