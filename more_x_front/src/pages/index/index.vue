@@ -6,7 +6,7 @@
     <div v-else>
       <div class="index-title"></div>
       <div>
-        <accounts></accounts>
+        <accounts ref="accounts"></accounts>
       </div>
     </div>
 
@@ -17,6 +17,7 @@
 <script>
 import login from "../../components/index/login";
 import accounts from  "../../components/index/ accounts"
+import config from "../../config";
 
 export default {
   components: {
@@ -39,6 +40,7 @@ export default {
   mounted() {
     if(wx.getStorageSync('userinfo')){
       this.notLogin = false
+      this.getRecord()
     } else {
       wx.hideTabBar()
     }
@@ -53,7 +55,25 @@ export default {
         icon: 'success',
         duration: 1000
       })
+
     },
+
+    getRecord () {
+      var _this = this
+      wx.request({
+        url: config.accountUrl + '/all',
+        data: _this.accountItem,
+        method: 'GET',
+        header: {
+          'content-type': 'application/json'
+        },
+        success (res) {
+          console.log(res.data)
+          _this.$refs.accounts.items = res.data
+          _this.$refs.accounts.processItemInfo()
+        }
+      })
+    }
   },
 
 }

@@ -44,114 +44,16 @@
 
 <script>
   import Index from "../../pages/counter/index";
+  import {payConfig} from "../../customConfig/payConfig";
+
   export default {
     components: {Index},
+
     data () {
       return {
         currentUser: {},
 
-        items: [
-          {
-            id: 1,
-            type: 0,
-            category: '食物',
-            subCategory: '零食',
-            desc: '今天肚子饿了所以吃了点',
-            value: 50,
-            date: '2020/5/13',
-            pay: 'wechat',
-            user: 'openid'
-          },
-          {
-            id: 2,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'bankCard',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-          {
-            id: 3,
-            type: 1,
-            category: '工资',
-            subCategory: '业务分红',
-            desc: 'xxx',
-            value: 500,
-            date: '2020/5/13',
-            pay: 'alipay',
-            user: 'openid'
-          },
-
-        ],
+        items: [],
         processedItems: []
       }
     },
@@ -159,8 +61,6 @@
     mounted() {
      this.processItemInfo()
     },
-
-
 
     methods: {
       processItemInfo () {
@@ -185,15 +85,10 @@
       },
 
       getPayName (pay) {
-        switch (pay) {
-          case 'wechat':
-            return '微信';
-          case 'bankCard':
-            return '银行卡';
-          case 'alipay':
-            return '支付宝';
-          default:
-            return '其他';
+        for (const payItem of payConfig) {
+          if (payItem.payEn === pay) {
+            return payItem.payCn
+          }
         }
       },
 
@@ -215,6 +110,7 @@
       scrolltolower(){
         console.log('lower')
       },
+
       scroll(e) {
         this.exitStyle(e.target.scrollTop)
       },

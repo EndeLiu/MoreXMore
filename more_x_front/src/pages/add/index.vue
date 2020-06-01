@@ -51,6 +51,7 @@
   import  {payConfig} from "../../customConfig/payConfig";
   import calculator from "../../components/add/calculator";
   import scrollSelector from "../../components/add/scrollSelector";
+  import config from "../../config";
 
   export default {
     components: {
@@ -113,10 +114,21 @@
       },
 
       submit () {
+        var _this = this
+        _this.accountItem['userid'] = wx.getStorageSync('userinfo').openId
         if (this.check()) {
-          console.log('提交到后台')
+          wx.request({
+            url: config.accountUrl + '/add',
+            data: _this.accountItem,
+            method: 'POST',
+            header: {
+              'content-type': 'application/json'
+            },
+            success (res) {
+              console.log(res.data)
+            }
+          })
         }
-        console.log(this.accountItem)
       },
 
       getToday () {
