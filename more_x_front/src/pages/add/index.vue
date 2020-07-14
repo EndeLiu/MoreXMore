@@ -30,9 +30,10 @@
           </li>
         </ul>
       </div>
+      <div @click="submit" class="log">记账!</div>
     </div>
 
-    <button @click="submit" class="log">记账!</button>
+
 
 
     <div class="cal-root" >
@@ -366,6 +367,7 @@
   text-align: center;
 }
 .log {
+  text-align: center;
   border-radius: 4px;
   font-weight: bolder;
   background-color: deepskyblue;
@@ -374,6 +376,8 @@
   line-height: 30px;
   width: 80%;
   margin: auto;
+  margin-top: 20px;
   border: 0;
+  box-shadow:0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
 }
 </style>

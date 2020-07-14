@@ -121,7 +121,12 @@
 
 <style lang="scss">
 .account-area {
+  position: absolute;
+  top: 14vh;
   height: 85vh;
+  padding-top: 20px;
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.7);
 }
 .item {
   width: 90%;
