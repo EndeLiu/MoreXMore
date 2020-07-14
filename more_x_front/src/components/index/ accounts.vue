@@ -64,6 +64,7 @@
 
     methods: {
       processItemInfo () {
+        this.processedItems = []
         for(let i=0; i<this.items.length;i++){
           let newItem = {}
           for(let attr in this.items[i]){
@@ -258,5 +259,11 @@
 }
 .pay-by-default {
   background-color: #322f3b;
+}
+.pay-by-ICBC {
+  background-color: #c7000b;
+}
+.pay-by-ABC {
+  background-color: #37b7a5;
 }
 </style>

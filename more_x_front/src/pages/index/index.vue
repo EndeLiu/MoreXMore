@@ -38,6 +38,7 @@ export default {
   },
 
   mounted() {
+    console.log('挂载')
     if(wx.getStorageSync('userinfo')){
       this.notLogin = false
       this.getRecord()
@@ -55,7 +56,7 @@ export default {
         icon: 'success',
         duration: 1000
       })
-
+      this.getRecord()
     },
 
     getRecord () {
@@ -68,8 +69,9 @@ export default {
           'content-type': 'application/json'
         },
         success (res) {
+          console.log('get record success')
           console.log(res.data)
-          _this.$refs.accounts.items = res.data
+          _this.$refs.accounts.items = res.data.reverse()
           _this.$refs.accounts.processItemInfo()
         }
       })

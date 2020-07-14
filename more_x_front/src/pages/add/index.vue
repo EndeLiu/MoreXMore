@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <button @click="submit">123</button>
+    <button @click="submit" class="log">记账!</button>
 
 
     <div class="cal-root" >
@@ -112,6 +112,18 @@
         }
         return true
       },
+      clear () {
+        this.accountItem = {
+          type: 0,
+          value : '0.00',
+          category: Category[0].name,
+          subCategory: Category[0].subCat[0].name,
+          date:'',
+          desc:'',
+          pay:''
+        }
+        this.activatePay(-1)
+      },
 
       submit () {
         var _this = this
@@ -126,6 +138,18 @@
             },
             success (res) {
               console.log(res.data)
+              if (res.data.msg === "ok") {
+                _this.clear()
+                wx.reLaunch({
+                  url: '../index/main',
+                  success (res) {
+                    console.log(res)
+                  },
+                  error (res) {
+                    console.log(res)
+                  },
+                })
+              }
             }
           })
         }
@@ -341,5 +365,15 @@
   line-height: 50px;
   text-align: center;
 }
-
+.log {
+  border-radius: 4px;
+  font-weight: bolder;
+  background-color: deepskyblue;
+  color: white;
+  height: 30px;
+  line-height: 30px;
+  width: 80%;
+  margin: auto;
+  border: 0;
+}
 </style>
